@@ -1,47 +1,29 @@
-require('dotenv').config();
-import path from "path";
+import dotenv from "dotenv";
 import { Config } from "knex";
+import path from "path";
+dotenv.config();
 
-const {
-	SUPER_DICT_POSTGRES_HOST,
-	SUPER_DICT_POSTGRES_DATABASE,
-	SUPER_DICT_POSTGRES_USERNAME,
-	SUPER_DICT_POSTGRES_PASSWORD,
-	SUPER_DICT_POSTGRES_PORT,
-	SUPER_DICT_POSTGRES_SSL,
-} = process.env;
-
-const databaseDirectory = path.resolve(__dirname, 'src', 'database')
-const migrationDirectory = path.join(databaseDirectory, 'migrations');
-const seedsDirectory = path.join(databaseDirectory, 'seeds');
-
-const knexConfig: Config = {
-	client: 'postgresql',
-	connection: {
-		host: SUPER_DICT_POSTGRES_HOST,
-		database: SUPER_DICT_POSTGRES_DATABASE,
-		user: SUPER_DICT_POSTGRES_USERNAME,
-		password: SUPER_DICT_POSTGRES_PASSWORD,
-		port: Number(SUPER_DICT_POSTGRES_PORT),
-		ssl: SUPER_DICT_POSTGRES_SSL === 'true',
-	},
-	pool: {
-		min: 1,
-		max: 1,
-	},
-	migrations: {
-		directory: migrationDirectory,
-		tableName: 'knex_migrations_new',
-	},
-	seeds: {
-		directory: seedsDirectory,
-	},
+interface KnexConfig {
+	[name: string]: Config;
 }
 
-module.exports = {
-	test: knexConfig,
-	development: knexConfig,
-	production: knexConfig,
-	migration: knexConfig,
-	staging: knexConfig,
-}
+var knexConfig: KnexConfig = {
+	development: {
+		client: "pg",
+		connection: {
+			host : process.env.DB_HOST || "127.0.0.1",
+			user : process.env.DB_USERNAME || "postgres",
+			password :  process.env.DB_PASSWRORD || "123",
+			database : process.env.DB_DEV_NAME || "stock_control"
+		},
+		migrations: {
+			directory: path.resolve(__dirname, 'src', 'database', 'migrations'),
+			extension: "ts",
+		},
+	}
+};
+
+var environment = process.env.NODE_ENV || 'development';
+var config = knexConfig[environment];
+
+module.exports = config;
