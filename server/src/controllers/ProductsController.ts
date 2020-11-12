@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import knex from "../database/connection";
 
 class ProductsController {
@@ -19,13 +19,39 @@ class ProductsController {
             price
         }
 
-        const insertedProduct = await knex('products').insert(product);
-        const insertedProductId = insertedProduct[0];        
+        try {
+            await knex('products').insert(product);
+            
+            return response.status(201).send();
+        }
+        catch(err) {
+            return response.status(400).json({
+                error: 'Unexpected error while creating new product'
+            });
+        }
+    }
 
-        return response.json({
-            barcode: insertedProductId,
-            ...product
-        });
+    async update (request: Request, response: Response) {
+        const {
+            barcode
+        } = request.params;
+        
+
+        const {
+            active
+        } = request.body;
+
+        try {
+            await knex('products')
+                .where('barcode', barcode)
+                .update({active: active});
+            
+            return response.status(201).send();
+        }catch(err) {
+            return response.status(400).json({
+                error: 'Unexpected error while updating the stock'
+            });
+        }
     }
 }
 
