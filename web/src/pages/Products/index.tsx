@@ -13,6 +13,7 @@ import {
     TextField
 } from "@material-ui/core";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
+import { FaSortUp, FaSortDown } from "react-icons/fa";
 
 import ProductService from "../../services/ProductService";
 
@@ -23,11 +24,24 @@ interface ProductsProps {
     active: boolean;
 }
 
+interface SortedColum {
+    columnName: string;
+    ascending: boolean;
+}
 
 const Products = () => {
+    const columnBarcode = 'barcode';
+    const columnName = 'name';
+    const columnPrice = 'price';
+    const columnActive = 'active';
+    
     const [products, setProducts] = useState<ProductsProps[]>([]);
     const [productsFiltered, setProductsFiltered] = useState<ProductsProps[]>([]);
     const [filter, setFilter] = useState('');
+    const [sortColumn, setSortColumn] = useState<SortedColum>({
+        columnName: 'barcode',
+        ascending: true
+    });
 
     useEffect(() => {
         loadProducts();
@@ -63,16 +77,107 @@ const Products = () => {
         // open the dialog
     }
 
+    const sortTable = (columnName: string) => {
+        let ascending = columnName === sortColumn.columnName ? !sortColumn.ascending : true
+        setSortColumn({
+            columnName,
+            ascending
+        });
+
+        sortProducts(columnName, ascending);
+    }
+
+    const isSortedColumn = (columnName: string) => {
+        return sortColumn.columnName === columnName;
+    }
+
+    const sortProducts = (columnName: string, ascending: boolean) => {
+        const sortedProducts = productsFiltered.sort((a: Record<string, any>, b: Record<string, any>) => {
+            if(a[columnName] < b[columnName]) {
+                return ascending ? -1 : 1;
+            }
+            if(a[columnName] > b[columnName]) {
+                return ascending ? 1 : -1;
+            }
+
+            return 0;            
+        });
+
+        setProductsFiltered(sortedProducts);
+    }
+
     const renderTable = () => {
         if (productsFiltered.length) {
             return (
                 <Table aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="right">Cód. Barras</TableCell>
-                            <TableCell align="left">Nome</TableCell>
-                            <TableCell align="right">Preço</TableCell>
-                            <TableCell align="left" style={{width: "50px"}}>Ativo</TableCell>
+                            <TableCell align="right"
+                                onClick={() => sortTable(columnBarcode)}
+                            >
+                                Cód. Barras
+                                <span>
+                                    {
+                                        isSortedColumn(columnBarcode) ? 
+                                            (
+                                                sortColumn.ascending ?
+                                                    <FaSortUp /> :
+                                                    <FaSortDown />
+                                            ) : 
+                                            null
+                                    }
+                                </span>
+                            </TableCell>
+                            <TableCell align="left" 
+                                onClick={() => sortTable(columnName)}
+                            >
+                                Nome
+                                <span>
+                                    {
+                                        isSortedColumn(columnName) ? 
+                                            (
+                                                sortColumn.ascending ?
+                                                    <FaSortUp /> :
+                                                    <FaSortDown />
+                                            ) : 
+                                            null
+                                    }
+                                </span>
+                            </TableCell>
+                            <TableCell align="right"
+                                onClick={() => sortTable(columnPrice)}
+                            >
+                                Preço
+                                <span>
+                                    {
+                                        isSortedColumn(columnPrice) ? 
+                                            (
+                                                sortColumn.ascending ?
+                                                    <FaSortUp /> :
+                                                    <FaSortDown />
+                                            ) : 
+                                            null
+                                    }
+                                </span>
+                            </TableCell>
+                            <TableCell 
+                                align="left" 
+                                style={{width: "80px"}}
+                                onClick={() => sortTable(columnActive)}
+                            >
+                                Ativo
+                                <span>
+                                    {
+                                        isSortedColumn(columnActive) ? 
+                                            (
+                                                sortColumn.ascending ?
+                                                    <FaSortUp /> :
+                                                    <FaSortDown />
+                                            ) : 
+                                            null
+                                    }
+                                </span>
+                            </TableCell>
                             <TableCell align="right" style={{width: "200px"}} />
                         </TableRow>
                     </TableHead>

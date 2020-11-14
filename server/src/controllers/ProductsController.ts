@@ -3,7 +3,9 @@ import knex from "../database/connection";
 
 class ProductsController {
     async index(request: Request, response: Response) {
-        const products =  await knex('products').select('*');
+        const products =  await knex('products')
+            .select('*')
+            .orderBy('barcode');
 
         return response.json(products);
     }
