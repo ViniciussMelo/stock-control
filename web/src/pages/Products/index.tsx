@@ -66,16 +66,16 @@ const Products = () => {
         const {data} = await ProductService.findAll();
         setProducts(data);
         setProductsFiltered(data);
-    }
+    };
 
     const deleteProduct = async (barcode: number) => {
         await ProductService.delete(barcode);
         loadProducts();
-    }
+    };
 
     const openDialog = async (product? : ProductsProps) => {
         // open the dialog
-    }
+    };
 
     const sortTable = (columnName: string) => {
         let ascending = columnName === sortColumn.columnName ? !sortColumn.ascending : true
@@ -85,11 +85,7 @@ const Products = () => {
         });
 
         sortProducts(columnName, ascending);
-    }
-
-    const isSortedColumn = (columnName: string) => {
-        return sortColumn.columnName === columnName;
-    }
+    };
 
     const sortProducts = (columnName: string, ascending: boolean) => {
         const sortedProducts = productsFiltered.sort((a: Record<string, any>, b: Record<string, any>) => {
@@ -104,7 +100,18 @@ const Products = () => {
         });
 
         setProductsFiltered(sortedProducts);
-    }
+    };
+
+    const renderIconSort = (columnName: string) => {
+        if (isSortedColumn(columnName)) {
+            return sortColumn.ascending ? <FaSortUp /> : <FaSortDown />
+        }
+        return null;
+    };
+
+    const isSortedColumn = (columnName: string) => {
+        return sortColumn.columnName === columnName;
+    };
 
     const renderTable = () => {
         if (productsFiltered.length) {
@@ -118,13 +125,7 @@ const Products = () => {
                                 Cód. Barras
                                 <span>
                                     {
-                                        isSortedColumn(columnBarcode) ? 
-                                            (
-                                                sortColumn.ascending ?
-                                                    <FaSortUp /> :
-                                                    <FaSortDown />
-                                            ) : 
-                                            null
+                                        renderIconSort(columnBarcode)
                                     }
                                 </span>
                             </TableCell>
@@ -134,13 +135,7 @@ const Products = () => {
                                 Nome
                                 <span>
                                     {
-                                        isSortedColumn(columnName) ? 
-                                            (
-                                                sortColumn.ascending ?
-                                                    <FaSortUp /> :
-                                                    <FaSortDown />
-                                            ) : 
-                                            null
+                                        renderIconSort(columnName)
                                     }
                                 </span>
                             </TableCell>
@@ -150,13 +145,7 @@ const Products = () => {
                                 Preço
                                 <span>
                                     {
-                                        isSortedColumn(columnPrice) ? 
-                                            (
-                                                sortColumn.ascending ?
-                                                    <FaSortUp /> :
-                                                    <FaSortDown />
-                                            ) : 
-                                            null
+                                        renderIconSort(columnPrice)
                                     }
                                 </span>
                             </TableCell>
@@ -168,13 +157,7 @@ const Products = () => {
                                 Ativo
                                 <span>
                                     {
-                                        isSortedColumn(columnActive) ? 
-                                            (
-                                                sortColumn.ascending ?
-                                                    <FaSortUp /> :
-                                                    <FaSortDown />
-                                            ) : 
-                                            null
+                                        renderIconSort(columnActive)
                                     }
                                 </span>
                             </TableCell>
