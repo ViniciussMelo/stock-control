@@ -16,7 +16,7 @@ class Service {
     }
 
     update<T> (id: number, payload: T) {
-        return api.post(this.url, { ...payload, id });
+        return api.put(`${this.url}/${id}`, { ...payload, id });
     }
 
     findAll() {

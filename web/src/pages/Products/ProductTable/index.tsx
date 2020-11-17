@@ -11,6 +11,9 @@ import {
 } from "@material-ui/core";
 import { FaSortUp, FaSortDown } from "react-icons/fa";
 
+import ProductDialog from "../ProductDialog";
+import {OpenOptions} from "../ProductDialog/OpenOptionsEnum";
+
 interface Product {
     barcode: number;
     name: string;
@@ -34,11 +37,13 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter }) => {
     const columnPrice = 'price';
     const columnActive = 'active';
     
+    const [dialogOpen, setDialogOpen] = useState(false);
     const [sortColumn, setSortColumn] = useState<SortedColum>({
         columnName: 'barcode',
         ascending: true
     });
     const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
+    const [selectedProdut, setSelectedProduct] = useState<Product>();
 
     const sortTable = (columnNameSort: string) => {
         let ascending = columnNameSort === sortColumn.columnName ? !sortColumn.ascending : true
@@ -54,9 +59,7 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter }) => {
         setProductsFiltered(products);
     }, [products])
 
-    useEffect(() => {
-        console.log(filter.length);
-        
+    useEffect(() => {        
         if (filter.length) {
             const productsFilter: Product[] = products.filter(value => { 
                 return (
@@ -67,8 +70,6 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter }) => {
 
             setProductsFiltered(productsFilter);
         } else {
-            console.log(products);
-            
             setProductsFiltered(products);
         }
     },[filter]);
@@ -99,75 +100,96 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter }) => {
         return sortColumn.columnName === columnNameSort;
     };
 
+    const handleDeleteProduct = (product: Product) => {
+
+    };
+
+    const handleEditProduct = (product: Product) => {
+        setSelectedProduct(product);
+        setDialogOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setDialogOpen(false);
+    }
+
     if (productsFiltered.length) {
         return (
-            <Table aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell align="right"
-                            onClick={() => sortTable(columnBarcode)}
-                        >
-                            Cód. Barras
-                            <span>
-                                {
-                                    renderIconSort(columnBarcode)
-                                }
-                            </span>
-                        </TableCell>
-                        <TableCell align="left" 
-                            onClick={() => sortTable(columnName)}
-                        >
-                            Nome
-                            <span>
-                                {
-                                    renderIconSort(columnName)
-                                }
-                            </span>
-                        </TableCell>
-                        <TableCell align="right"
-                            onClick={() => sortTable(columnPrice)}
-                        >
-                            Preço
-                            <span>
-                                {
-                                    renderIconSort(columnPrice)
-                                }
-                            </span>
-                        </TableCell>
-                        <TableCell 
-                            align="left" 
-                            style={{width: "80px"}}
-                            onClick={() => sortTable(columnActive)}
-                        >
-                            Ativo
-                            <span>
-                                {
-                                    renderIconSort(columnActive)
-                                }
-                            </span>
-                        </TableCell>
-                        <TableCell align="right" style={{width: "200px"}} />
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {productsFiltered.map((product) => (
-                        <TableRow key={product.barcode}>
-                            <TableCell align="right">{product.barcode}</TableCell>
-                            <TableCell align="left">{product.name}</TableCell>
-                            <TableCell align="right">{`R$ ${product.price}`}</TableCell>
-                            <TableCell align="left">{product.active ? "Sim" : "Não"}</TableCell>
-                            <TableCell align="right">
-                                <Button onClick={() => {}}>
-                                    <AiFillEdit />
-                                </Button>
-                                <Button onClick={() => {}}>
-                                    <AiFillDelete />
-                                </Button>
+            <>
+                {dialogOpen && <ProductDialog 
+                                    open={dialogOpen} 
+                                    handleClose={handleCloseModal} 
+                                    product={selectedProdut} 
+                                    openOption={OpenOptions.Edit} 
+                                />}
+                <Table aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="right"
+                                onClick={() => sortTable(columnBarcode)}
+                            >
+                                Cód. Barras
+                                <span>
+                                    {
+                                        renderIconSort(columnBarcode)
+                                    }
+                                </span>
                             </TableCell>
+                            <TableCell align="left" 
+                                onClick={() => sortTable(columnName)}
+                            >
+                                Nome
+                                <span>
+                                    {
+                                        renderIconSort(columnName)
+                                    }
+                                </span>
+                            </TableCell>
+                            <TableCell align="right"
+                                onClick={() => sortTable(columnPrice)}
+                            >
+                                Preço
+                                <span>
+                                    {
+                                        renderIconSort(columnPrice)
+                                    }
+                                </span>
+                            </TableCell>
+                            <TableCell 
+                                align="left" 
+                                style={{width: "80px"}}
+                                onClick={() => sortTable(columnActive)}
+                            >
+                                Ativo
+                                <span>
+                                    {
+                                        renderIconSort(columnActive)
+                                    }
+                                </span>
+                            </TableCell>
+                            <TableCell align="right" style={{width: "200px"}} />
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHead>
+                    <TableBody>
+                        {productsFiltered.map((product) => (
+                            <TableRow key={product.barcode}>
+                                <TableCell align="right">{product.barcode}</TableCell>
+                                <TableCell align="left">{product.name}</TableCell>
+                                <TableCell align="right">{`R$ ${product.price}`}</TableCell>
+                                <TableCell align="left">{product.active ? "Sim" : "Não"}</TableCell>
+                                <TableCell align="right">
+                                    <Button onClick={() => {handleEditProduct(product)}}>
+                                        <AiFillEdit />
+                                    </Button>
+                                    <Button onClick={() => {handleDeleteProduct(product)}}>
+                                        <AiFillDelete />
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </>
         )
     };
 

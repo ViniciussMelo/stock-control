@@ -40,13 +40,19 @@ class ProductsController {
         
 
         const {
+            name,
+            price,
             active
         } = request.body;
 
         try {
             await knex('products')
                 .where('barcode', barcode)
-                .update({active: active});
+                .update({
+                    name: name,
+                    price: price,
+                    active: active,
+                });
             
             return response.status(201).send();
         }catch(err) {

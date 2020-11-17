@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 
 import ProductService from "../../../services/ProductService";
+import {OpenOptions} from "./OpenOptionsEnum";
 
 interface Product {
     barcode: number;
@@ -22,19 +23,30 @@ interface Product {
 interface ProductDialogProp {
 	product?: Product;
     open: boolean;
-    handleClose(): void;
+	handleClose(): void;
+	openOption: OpenOptions;
 }
 
-const ProductDialog: React.FC<ProductDialogProp> = ({ product, open, handleClose }) => {
+const ProductDialog: React.FC<ProductDialogProp> = ({ openOption, product, open, handleClose }) => {
 	const [newProduct, setNewProduct] = useState<Product>({
-		barcode: 0,
-		name: "",
-		price: 0.00,
-		active: true
+		barcode: product?.barcode || 0,
+		name: product?.name || "",
+		price: product?.price || 0.00,
+		active: product ? product.active : true
 	});
 
 	const handleSubmit = async () => {
-		await ProductService.create(newProduct);
+		switch (openOption) {
+			case OpenOptions.Create:
+				await ProductService.create(newProduct);
+				break;
+			case OpenOptions.Edit:
+				await ProductService.update(newProduct.barcode, newProduct);
+				break;
+			default:
+				console.log('Error enum OpenOptions!');								
+				break;
+		}
 		alert('Salvo com sucesso!')
 		handleClose();
 	}

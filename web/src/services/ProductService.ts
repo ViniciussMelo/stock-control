@@ -1,9 +1,9 @@
 import {Service} from "./Service";
 
-class FuncionarioService extends Service {
+class ProductService extends Service {
     constructor(){
         super('/products');
     }
 }
 
-export default new FuncionarioService();
+export default new ProductService();

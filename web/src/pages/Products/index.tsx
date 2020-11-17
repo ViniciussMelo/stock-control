@@ -10,7 +10,8 @@ import {
 import ProductService from "../../services/ProductService";
 
 import ProductDialog from "./ProductDialog";
-import ProductTable from './ProductTable';
+import ProductTable from "./ProductTable";
+import {OpenOptions} from "./ProductDialog/OpenOptionsEnum";
 
 interface ProductsProps {
     barcode: number;
@@ -53,7 +54,11 @@ const Products = () => {
 
     return (
         <>
-            { dialogOpen && <ProductDialog open={dialogOpen} handleClose={handleCloseModal}/>}
+            { dialogOpen && <ProductDialog 
+                                open={dialogOpen} 
+                                handleClose={handleCloseModal} 
+                                openOption={OpenOptions.Create}
+                            />}
             <Container style={{paddingTop: '30px'}}>
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
