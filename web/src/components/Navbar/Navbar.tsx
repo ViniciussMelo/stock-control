@@ -7,11 +7,17 @@ import { IconContext } from 'react-icons';
 import { SidebarData } from "./SidebarData";
 
 import './styles.css';
+import { title } from 'process';
 
 function Navbar() {
     const [sidebar, setSidebar] = useState(false);
+    const [toolbarTitle, setToolbarTitle] = useState('Início');
 
     const showSideBar = () => setSidebar(!sidebar);
+
+    const handleLinkClick= (itemTitle: string) => {
+        setToolbarTitle(itemTitle);
+    }
 
     return (
         <>
@@ -20,6 +26,7 @@ function Navbar() {
                     <Link to="#" className="menu-bars">
                         <FaBars onClick={showSideBar}/>
                     </Link>
+                    <h1>{toolbarTitle}</h1>
                 </div>
 
                 <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
@@ -32,7 +39,7 @@ function Navbar() {
                         {SidebarData.map((item, index) => {
                             return (
                                 <li key={index} className={item.cName}>
-                                    <Link to={item.path}>
+                                    <Link to={item.path} onClick={() => {handleLinkClick(item.title)}}>
                                         {item.icon}
                                         <span>{item.title}</span>
                                     </Link>
