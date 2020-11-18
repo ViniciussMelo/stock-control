@@ -27,6 +27,11 @@ interface ProductDialogProp {
 	openOption: OpenOptions;
 }
 
+interface ProductError {
+	name: boolean;
+    price: boolean;
+}
+
 const ProductDialog: React.FC<ProductDialogProp> = ({ openOption, product, open, handleClose }) => {
 	const [newProduct, setNewProduct] = useState<Product>({
 		barcode: product?.barcode || 0,
@@ -34,21 +39,76 @@ const ProductDialog: React.FC<ProductDialogProp> = ({ openOption, product, open,
 		price: product?.price || 0.00,
 		active: product ? product.active : true
 	});
+	const [productError, setProductError] = useState<ProductError>({
+		name: false,
+		price: false
+	});
 
 	const handleSubmit = async () => {
-		switch (openOption) {
-			case OpenOptions.Create:
-				await ProductService.create(newProduct);
-				break;
-			case OpenOptions.Edit:
-				await ProductService.update(newProduct.barcode, newProduct);
-				break;
-			default:
-				console.log('Error enum OpenOptions!');								
-				break;
+		let validPrice: boolean = true;
+		let validName: boolean = true;
+
+		if(productError.name || productError.price) {
+			alert('Existem erros no formulário!');
+			return;
 		}
-		alert('Salvo com sucesso!')
+
+		if(!isValidName(newProduct.name)) {
+			validName = false;
+		}
+
+		if (!isValidPrice(newProduct.price.toString())) {
+			validPrice = false;
+		}
+
+		if(!validName || !validPrice) {
+			alert('Existem erros no formulário!');
+			setProductError({ name: !validName, price: !validPrice});
+			return;
+		}
+		
+		try{
+			switch (openOption) {
+				case OpenOptions.Create:
+					await ProductService.create(newProduct);
+					break;
+				case OpenOptions.Edit:
+					await ProductService.update(newProduct.barcode, newProduct);
+					break;
+				default:
+					console.log('Error enum OpenOptions!');								
+					break;
+			}
+			alert('Salvo com sucesso!')
+		} catch(err) {
+			const { data } = err.response;
+			alert('Error: ' + data.error);
+		}
 		handleClose();
+	}
+
+	const isValidPrice = (value: string) => {
+		if(!value.length || parseFloat(value) <= 0) {
+			return false;
+		}
+		return true;
+	}
+
+	const isValidName = (value: string) => {
+		if(!value.trim().length) {
+			return false;
+		}
+		return true;
+	}
+
+	const handleEditName = (value: string) => {
+		setNewProduct({...newProduct, name: value});
+		setProductError({ ...productError, name: !isValidName });
+	}
+
+	const handleEditPrice = (value: string) => {
+		setNewProduct({...newProduct, price: parseFloat(value)});
+		setProductError({ ...productError, price: !isValidPrice(value) });
 	}
 
     return (
@@ -82,9 +142,12 @@ const ProductDialog: React.FC<ProductDialogProp> = ({ openOption, product, open,
 							id="name"
 							label="Nome"
 							type="text"
-							fullWidth
 							value={newProduct.name}
-							onChange={(event) => {setNewProduct({...newProduct, name: event.target.value})}}
+							onChange={(event) => {handleEditName(event.target.value)}}
+							error ={productError.name}
+							helperText={productError.name && "The value not be empty"}
+							fullWidth
+							required
 						/>
                 	</DialogContent>
 					<DialogContent
@@ -101,7 +164,10 @@ const ProductDialog: React.FC<ProductDialogProp> = ({ openOption, product, open,
 							id="price"
 							type="number"
 							value={newProduct.price}
-							onChange={(event) => {setNewProduct({...newProduct, price: parseFloat(event.target.value)})}}
+							onChange={(event) => {handleEditPrice(event.target.value)}}
+							error ={productError.price}
+							helperText={productError.price && "Value must be greater than zero"}
+							required
 						/>
 						<FormControlLabel
 							className="form-control-label-initial"

@@ -12,6 +12,7 @@ const stockController = new StockController();
 routes.get('/products', productsController.index);
 routes.post('/products', productsController.create);
 routes.put('/products/:barcode', productsController.update);
+routes.delete('/products/:barcode', productsController.delete);
 
 routes.get('/stock', stockController.index);
 routes.post('/stock', stockController.create);

@@ -11,8 +11,13 @@ import {
 } from "@material-ui/core";
 import { FaSortUp, FaSortDown } from "react-icons/fa";
 
+import ProductService from "../../../services/ProductService";
+
 import ProductDialog from "../ProductDialog";
+import DialogConfirmation from "../../../components/DialogConfirmation/DialogConfirmation";
+
 import {OpenOptions} from "../ProductDialog/OpenOptionsEnum";
+import { ConfirmationEnum } from "../../../components/DialogConfirmation/ConfirmationEnum";
 
 interface Product {
     barcode: number;
@@ -24,6 +29,7 @@ interface Product {
 interface ProductsTableProps {
     products: Product[];
     filter: string;
+    loadProducts(): void;
 }
 
 interface SortedColum {
@@ -31,13 +37,18 @@ interface SortedColum {
     ascending: boolean;
 }
 
-const ProductTable: React.FC<ProductsTableProps> = ({ products, filter }) => {
+interface ErrorInterface {
+    error: string;
+}
+
+const ProductTable: React.FC<ProductsTableProps> = ({ products, filter, loadProducts }) => {
     const columnBarcode = 'barcode';
     const columnName = 'name';
     const columnPrice = 'price';
     const columnActive = 'active';
     
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogConfirmationOpen, setDialogConfirmationOpen] = useState(false);
     const [sortColumn, setSortColumn] = useState<SortedColum>({
         columnName: 'barcode',
         ascending: true
@@ -100,10 +111,6 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter }) => {
         return sortColumn.columnName === columnNameSort;
     };
 
-    const handleDeleteProduct = (product: Product) => {
-
-    };
-
     const handleEditProduct = (product: Product) => {
         setSelectedProduct(product);
         setDialogOpen(true);
@@ -111,17 +118,48 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter }) => {
 
     const handleCloseModal = () => {
         setDialogOpen(false);
+        loadProducts();
+    }
+
+    const handleDeleteProduct = (product: Product) => {
+        setSelectedProduct(product);
+        setDialogConfirmationOpen(true);
+    };
+
+    const handleCloseModalConfirmation = async (action: ConfirmationEnum) => {
+        setDialogConfirmationOpen(false);        
+        if(action === ConfirmationEnum.Agree) {
+            try {
+                await ProductService.delete(selectedProdut!.barcode);
+                loadProducts();
+            } catch(err) {
+                const { data } = err.response;
+                alert('Error: ' + data.error);
+            }
+        }
     }
 
     if (productsFiltered.length) {
         return (
             <>
-                {dialogOpen && <ProductDialog 
-                                    open={dialogOpen} 
-                                    handleClose={handleCloseModal} 
-                                    product={selectedProdut} 
-                                    openOption={OpenOptions.Edit} 
-                                />}
+                {dialogOpen && (
+                        <ProductDialog 
+                            open={dialogOpen} 
+                            handleClose={handleCloseModal} 
+                            product={selectedProdut} 
+                            openOption={OpenOptions.Edit} 
+                        />
+                    )
+                }
+                {
+                    dialogConfirmationOpen && (
+                        <DialogConfirmation 
+                            open={dialogConfirmationOpen}
+                            handleClose={(action: ConfirmationEnum) => {handleCloseModalConfirmation(action)}}
+                            message="Confirma a exlcusão do registro selecionado?"
+                        />
+                    )
+                }
                 <Table aria-label="simple table">
                     <TableHead>
                         <TableRow>

@@ -34,15 +34,6 @@ const Products = () => {
         setProducts(data);
     };
 
-    const deleteProduct = async (barcode: number) => {
-        await ProductService.delete(barcode);
-        loadProducts();
-    };
-
-    const openDialog = async (product? : ProductsProps) => {
-        // open the dialog
-    };
-
     const handleCloseModal = () => {
         setDialogOpen(false);
         loadProducts();
@@ -54,11 +45,14 @@ const Products = () => {
 
     return (
         <>
-            { dialogOpen && <ProductDialog 
-                                open={dialogOpen} 
-                                handleClose={handleCloseModal} 
-                                openOption={OpenOptions.Create}
-                            />}
+            { dialogOpen && (
+                    <ProductDialog 
+                        open={dialogOpen} 
+                        handleClose={handleCloseModal} 
+                        openOption={OpenOptions.Create}
+                    />
+                )
+            }
             <Container style={{paddingTop: '30px'}}>
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
@@ -75,7 +69,7 @@ const Products = () => {
                         <Button variant="outlined" color="primary" onClick={handleOpenModal} >Cadastrar</Button>
                     </Grid>
                     <Grid item xs={12}>
-                        <ProductTable products={products} filter={filter} />
+                        <ProductTable products={products} filter={filter} loadProducts={loadProducts}/>
                     </Grid>
                 </Grid>
             </Container>

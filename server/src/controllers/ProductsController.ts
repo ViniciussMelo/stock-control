@@ -55,9 +55,37 @@ class ProductsController {
                 });
             
             return response.status(201).send();
-        }catch(err) {
+        } catch(err) {
             return response.status(400).json({
-                error: 'Unexpected error while updating the stock'
+                error: 'Unexpected error while updating the product'
+            });
+        }
+    }
+
+    async delete(request: Request, response: Response) {
+        const {
+            barcode
+        } = request.params;
+
+        const countProducts: number = await knex('stock_products')
+                                .where('product_barcode', barcode)
+                                .count('product_barcode');
+        if (countProducts) {
+            return response.status(400).json({
+                error: 'The product is still referenced from stock.'
+            });
+        }
+
+        try {
+            await knex('products')
+                .where('barcode', barcode)
+                .del();
+            
+            return response.status(201).send();
+        } catch(err) {
+            return response.status(400).json({
+                error: 'Unexpected error while deleting the product',
+                message: err
             });
         }
     }
