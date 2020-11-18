@@ -4,7 +4,10 @@ import {
     Grid,
     FormControl,
     Button,
-    TextField
+    TextField,
+    Select,
+    MenuItem,
+    FormHelperText
 } from "@material-ui/core";
 
 import ProductService from "../../services/ProductService";
@@ -19,11 +22,17 @@ interface ProductsProps {
     price: number;
     active: boolean;
 }
+export enum statusEnum {
+    all,
+    active,
+    inactive
+}
 
 const Products = () => {
     const [products, setProducts] = useState<ProductsProps[]>([]);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [filter, setFilter] = useState('');
+    const [status, setStatus] = useState(statusEnum.all);
 
     useEffect(() => {
         loadProducts();      
@@ -63,13 +72,34 @@ const Products = () => {
                                 value={filter}
                                 onChange={event => setFilter(event.target.value)}
                             />
+                            <div>
+                                
+                            </div>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={6} style={{display: "flex", alignItems: "flex-end", justifyContent: "flex-end"}}>
+                    <Grid item xs={3}>
+                        <Select
+                            style={{width: "50%"}}
+                            value={status}
+                            onChange={(e) => setStatus(parseInt(e.target.value as string))}
+                            defaultValue={statusEnum.all}
+                        >
+                            <MenuItem value={statusEnum.all}>Todos</MenuItem>
+                            <MenuItem value={statusEnum.active}>Ativo</MenuItem>
+                            <MenuItem value={statusEnum.inactive}>Inativo</MenuItem>
+                        </Select>
+                        <FormHelperText>Status</FormHelperText>
+                    </Grid>
+                    <Grid item xs={3} style={{display: "flex", alignItems: "flex-start", justifyContent: "flex-end"}}>
                         <Button variant="outlined" color="primary" onClick={handleOpenModal} >Cadastrar</Button>
                     </Grid>
                     <Grid item xs={12}>
-                        <ProductTable products={products} filter={filter} loadProducts={loadProducts}/>
+                        <ProductTable 
+                            products={products} 
+                            filter={filter} 
+                            loadProducts={loadProducts} 
+                            status={status}
+                        />
                     </Grid>
                 </Grid>
             </Container>

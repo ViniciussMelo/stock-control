@@ -18,6 +18,7 @@ import DialogConfirmation from "../../../components/DialogConfirmation/DialogCon
 
 import {OpenOptions} from "../ProductDialog/OpenOptionsEnum";
 import { ConfirmationEnum } from "../../../components/DialogConfirmation/ConfirmationEnum";
+import { statusEnum } from '../';
 
 interface Product {
     barcode: number;
@@ -30,6 +31,7 @@ interface ProductsTableProps {
     products: Product[];
     filter: string;
     loadProducts(): void;
+    status: statusEnum;
 }
 
 interface SortedColum {
@@ -37,11 +39,7 @@ interface SortedColum {
     ascending: boolean;
 }
 
-interface ErrorInterface {
-    error: string;
-}
-
-const ProductTable: React.FC<ProductsTableProps> = ({ products, filter, loadProducts }) => {
+const ProductTable: React.FC<ProductsTableProps> = ({ products, filter, loadProducts, status }) => {
     const columnBarcode = 'barcode';
     const columnName = 'name';
     const columnPrice = 'price';
@@ -70,12 +68,14 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter, loadProd
         setProductsFiltered(products);
     }, [products])
 
-    useEffect(() => {        
-        if (filter.length) {
+    useEffect(() => {
+        if (filter.length || status !== statusEnum.all) {
             const productsFilter: Product[] = products.filter(value => { 
                 return (
-                    value.barcode === parseInt(filter) ||
-                    value.name.toLowerCase().includes(filter)
+                    (value.barcode === parseInt(filter) ||
+                    value.name.toLowerCase().includes(filter)) && (
+                        status === statusEnum.all || value.active === (status === statusEnum.active ? true : false)
+                    )
                 );
             } );
 
@@ -83,7 +83,7 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter, loadProd
         } else {
             setProductsFiltered(products);
         }
-    },[filter]);
+    },[filter, status]);
     
     const sortProducts = (columnNameSort: string, ascending: boolean) => {
         const sortedProducts = products.sort((a: Record<string, any>, b: Record<string, any>) => {
