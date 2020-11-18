@@ -34,7 +34,7 @@ interface ProductsTableProps {
     status: statusEnum;
 }
 
-interface SortedColum {
+interface SortedColumn {
     columnName: string;
     ascending: boolean;
 }
@@ -47,7 +47,7 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter, loadProd
     
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogConfirmationOpen, setDialogConfirmationOpen] = useState(false);
-    const [sortColumn, setSortColumn] = useState<SortedColum>({
+    const [sortColumn, setSortColumn] = useState<SortedColumn>({
         columnName: 'barcode',
         ascending: true
     });
