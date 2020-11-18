@@ -7,7 +7,6 @@ import { IconContext } from 'react-icons';
 import { SidebarData } from "./SidebarData";
 
 import './styles.css';
-import { title } from 'process';
 
 function Navbar() {
     const [sidebar, setSidebar] = useState(false);
@@ -26,7 +25,7 @@ function Navbar() {
                     <Link to="#" className="menu-bars">
                         <FaBars onClick={showSideBar}/>
                     </Link>
-                    <h1>{toolbarTitle}</h1>
+                    <h1 className="text-title">{toolbarTitle}</h1>
                 </div>
 
                 <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>

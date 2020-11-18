@@ -5,15 +5,15 @@ import { GiExitDoor } from "react-icons/gi";
 
 export const SidebarData = [
     {
-        title: 'Produtos',
-        path: '/products',
-        icon: <AiOutlineBarcode />,
+        title: 'Início',
+        path: '/',
+        icon: <FaShoppingCart />,
         cName: 'nav-text'
     },
     {
-        title: 'Estoque',
-        path: '/stocks',
-        icon: <FaShoppingCart />,
+        title: 'Produtos',
+        path: '/products',
+        icon: <AiOutlineBarcode />,
         cName: 'nav-text'
     },
     {
