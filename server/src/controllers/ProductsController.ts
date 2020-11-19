@@ -67,10 +67,11 @@ class ProductsController {
             barcode
         } = request.params;
 
-        const countProducts: number = await knex('stock_products')
+        const stock = await knex('stock_products')
                                 .where('product_barcode', barcode)
-                                .count('product_barcode');
-        if (countProducts) {
+                                .select('*');
+
+        if (stock.length) {
             return response.status(400).json({
                 error: 'The product is still referenced from stock.'
             });

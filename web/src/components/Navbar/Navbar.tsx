@@ -25,7 +25,7 @@ function Navbar() {
                     <Link to="#" className="menu-bars">
                         <FaBars onClick={showSideBar}/>
                     </Link>
-                    <h1 className="text-title">{toolbarTitle}</h1>
+                    <h1 className="text-title" style={{color: "#fff"}}>{toolbarTitle}</h1>
                 </div>
 
                 <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>

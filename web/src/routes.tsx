@@ -14,7 +14,7 @@ const Routes = () => {
         <Router history={history}>
             <Navbar />
             <Switch>
-                <Route path="/" component={Stocks} />
+                <Route path="/" exact component={Stocks} />
                 <Route path="/products" component={Products} />
                 <Route path="/moviments" component={Moviments} />
             </Switch>

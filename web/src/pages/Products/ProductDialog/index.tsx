@@ -49,7 +49,6 @@ const ProductDialog: React.FC<ProductDialogProp> = ({ openOption, product, open,
 		let validName: boolean = true;
 
 		if(productError.name || productError.price) {
-			alert('Existem erros no formulário!');
 			return;
 		}
 
@@ -62,7 +61,6 @@ const ProductDialog: React.FC<ProductDialogProp> = ({ openOption, product, open,
 		}
 
 		if(!validName || !validPrice) {
-			alert('Existem erros no formulário!');
 			setProductError({ name: !validName, price: !validPrice});
 			return;
 		}
