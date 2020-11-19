@@ -37,7 +37,7 @@ const Stocks = () => {
         <>
             <Container style={{paddingTop: '30px'}}>
             <Grid container spacing={3}>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <FormControl fullWidth>
                             <TextField 
                                 id="pesquisa" 
@@ -49,9 +49,6 @@ const Stocks = () => {
                                 
                             </div>
                         </FormControl>
-                    </Grid>
-                    <Grid item xs={6} style={{display: "flex", alignItems: "flex-start", justifyContent: "flex-end"}}>
-                        <Button variant="outlined" color="primary" onClick={() => {}} >Cadastrar</Button>
                     </Grid>
                     <Grid item xs={12}>
                         <StockTable 

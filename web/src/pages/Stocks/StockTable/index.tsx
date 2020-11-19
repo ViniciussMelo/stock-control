@@ -114,7 +114,6 @@ const StockTable: React.FC<StockTableProps> = ({ stocks, filter, loadStock }) =>
                                 }
                             </span>
                         </TableCell>
-                        <TableCell align="right" style={{width: "200px"}} />
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -123,14 +122,6 @@ const StockTable: React.FC<StockTableProps> = ({ stocks, filter, loadStock }) =>
                             <TableCell align="right">{stock.barcode}</TableCell>
                             <TableCell align="left">{stock.name}</TableCell>
                             <TableCell align="right" style={stock.totalAmount < 100 ? {color: 'red'} : {}}>{stock.totalAmount}</TableCell>
-                            <TableCell align="right">
-                                <Button onClick={() => {}}>
-                                    <AiFillEdit />
-                                </Button>
-                                <Button onClick={() => {}}>
-                                    <AiFillDelete />
-                                </Button>
-                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
