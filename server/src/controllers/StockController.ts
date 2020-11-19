@@ -1,4 +1,4 @@
-import { Request, response, Response } from "express";
+import e, { Request, response, Response } from "express";
 import knex from "../database/connection";
 
 interface Product {
@@ -6,14 +6,45 @@ interface Product {
     active: boolean;
 }
 
+interface Stock {
+    id: number;
+    quantity: number;
+    name: string;
+    stock_type: string;
+    amount: number;
+    moviment_date: Date;
+    product_barcode: number;
+}
+
+interface StockView {
+    barcode: number;
+    name: string;
+    totalAmount: number;
+}
+
 class StockController {
     async index(request: Request, response: Response) {
-        const stocks = await knex('moviments')
+        let stockView: StockView[] = [];
+
+        const stocks: Stock[] = await knex('moviments')
             .join('products', 'moviments.product_barcode', '=', 'products.barcode')
-            .distinct()
-            .select(['moviments.*', 'products.name']);
-        
-        return response.json(stocks);
+            .select(['moviments.*', 'products.name'])
+            .orderBy('moviments.product_barcode');
+
+        stocks.forEach((item) => {
+            let indexStock = stockView.findIndex(element => element.barcode === item.product_barcode);
+            item.quantity = item.stock_type === 'entry' ? item.quantity : - item.quantity;
+            if(indexStock > -1) {
+                stockView[indexStock].totalAmount += item.quantity
+            } else {
+                stockView.push({
+                    barcode: item.product_barcode,
+                    name: item.name,
+                    totalAmount: item.quantity
+                });
+            }
+        });
+        return response.json(stockView);
     }
 
     async create (request: Request, response: Response) {

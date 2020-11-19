@@ -39,7 +39,7 @@ const Products = () => {
     }, []);
 
     const loadProducts = async () => {
-        const {data} = await ProductService.findAll();
+        const { data } = await ProductService.findAll();
         setProducts(data);
     };
 

@@ -6,6 +6,7 @@ export async function up(knex: Knex): Promise<void> {
         table.integer('quantity').notNullable();
         table.enu('stock_type', ['entry', 'exit']).notNullable();
         table.decimal('amount').notNullable();
+        table.date('moviment_date').notNullable();
 
         table.integer('product_barcode')
             .notNullable()

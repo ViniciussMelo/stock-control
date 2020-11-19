@@ -107,7 +107,7 @@ const StockTable: React.FC<StockTableProps> = ({ stocks, filter, loadStock }) =>
                         <TableCell align="right"
                             onClick={() => sortTable(columnTotalAmount)}
                         >
-                            Preço
+                            Quantidade
                             <span>
                                 {
                                     renderIconSort(columnTotalAmount)
@@ -122,7 +122,7 @@ const StockTable: React.FC<StockTableProps> = ({ stocks, filter, loadStock }) =>
                         <TableRow key={stock.barcode}>
                             <TableCell align="right">{stock.barcode}</TableCell>
                             <TableCell align="left">{stock.name}</TableCell>
-                            <TableCell align="right">{`R$ ${stock.totalAmount}`}</TableCell>
+                            <TableCell align="right" style={stock.totalAmount < 100 ? {color: 'red'} : {}}>{stock.totalAmount}</TableCell>
                             <TableCell align="right">
                                 <Button onClick={() => {}}>
                                     <AiFillEdit />
