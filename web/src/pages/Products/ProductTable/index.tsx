@@ -65,15 +65,11 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter, loadProd
     };
 
     useEffect(() => {
-        setProductsFiltered(products);
-    }, [products])
-
-    useEffect(() => {
         if (filter.length || status !== statusEnum.all) {
             const productsFilter: Product[] = products.filter(value => { 
                 return (
                     (value.barcode === parseInt(filter) ||
-                    value.name.toLowerCase().includes(filter)) && (
+                    value.name.toLowerCase().includes(filter.toLocaleLowerCase())) && (
                         status === statusEnum.all || value.active === (status === statusEnum.active ? true : false)
                     )
                 );
@@ -83,7 +79,7 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter, loadProd
         } else {
             setProductsFiltered(products);
         }
-    },[filter, status]);
+    },[filter, status, products]);
     
     const sortProducts = (columnNameSort: string, ascending: boolean) => {
         const sortedProducts = products.sort((a: Record<string, any>, b: Record<string, any>) => {
@@ -211,10 +207,10 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter, loadProd
                     <TableBody>
                         {productsFiltered.map((product) => (
                             <TableRow key={product.barcode}>
-                                <TableCell align="right">{product.barcode}</TableCell>
-                                <TableCell align="left">{product.name}</TableCell>
-                                <TableCell align="right">{`R$ ${product.price}`}</TableCell>
-                                <TableCell align="left">{product.active ? "Sim" : "Não"}</TableCell>
+                                <TableCell align="right" id={!product.active ? "inactive-row" : ""}>{product.barcode}</TableCell>
+                                <TableCell align="left" id={!product.active ? "inactive-row" : ""}>{product.name}</TableCell>
+                                <TableCell align="right" id={!product.active ? "inactive-row" : ""}>{`R$ ${product.price}`}</TableCell>
+                                <TableCell align="left" id={!product.active ? "inactive-row" : ""}>{product.active ? "Sim" : "Não"}</TableCell>
                                 <TableCell align="right">
                                     <Button onClick={() => {handleEditProduct(product)}}>
                                         <AiFillEdit />

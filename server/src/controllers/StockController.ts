@@ -14,11 +14,13 @@ interface Stock {
     amount: number;
     moviment_date: Date;
     barcode: number;
+    active: boolean;
 }
 
 interface StockView {
     barcode: number;
     name: string;
+    active: boolean;
     totalAmount: number;
 }
 
@@ -28,7 +30,7 @@ class StockController {
 
         const stocks: Stock[] = await knex('moviments')
             .rightJoin('products', 'moviments.product_barcode', '=', 'products.barcode')
-            .select(['moviments.*', 'products.barcode', 'products.name'])
+            .select(['moviments.*', 'products.barcode', 'products.name', 'products.active'])
             .orderBy('products.barcode');
 
         stocks.forEach((item) => {
@@ -40,6 +42,7 @@ class StockController {
                 stockView.push({
                     barcode: item.barcode,
                     name: item.name,
+                    active: item.active,
                     totalAmount: item.quantity
                 });
             }

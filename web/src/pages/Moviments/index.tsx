@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Moviments = () => {
     return (
-        <div className="moviments">
-            <h1>moviments</h1>
-        </div>
+        <>
+            
+        </>
     )
 }
 

@@ -3,11 +3,7 @@ import {
     Container,
     Grid,
     FormControl,
-    Button,
-    TextField,
-    Select,
-    MenuItem,
-    FormHelperText
+    TextField
 } from "@material-ui/core";
 
 import StockService from "../../services/StockService"
@@ -17,6 +13,7 @@ import StockTable from "./StockTable";
 interface Stock {
     barcode: number;
     name: string;
+    active: boolean;
     totalAmount: number;
 }
 
@@ -41,20 +38,16 @@ const Stocks = () => {
                         <FormControl fullWidth>
                             <TextField 
                                 id="pesquisa" 
-                                placeholder="Pesquisa por código ou nome"
-                                // value={filter}
-                                // onChange={event => setFilter(event.target.value)}
+                                placeholder="Pesquisa geral"
+                                value={filter}
+                                onChange={event => setFilter(event.target.value)}
                             />
-                            <div>
-                                
-                            </div>
                         </FormControl>
                     </Grid>
                     <Grid item xs={12}>
                         <StockTable 
                             stocks={stocks}
                             filter={filter}
-                            loadStock={loadStocks}
                         />
                     </Grid>
                 </Grid>

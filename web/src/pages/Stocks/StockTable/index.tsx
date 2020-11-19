@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { FaSortUp, FaSortDown } from "react-icons/fa";
-import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import {
     Table,
     TableHead,
     TableRow,
     TableCell,
-    TableBody,
-    Typography,
-    Button
+    TableBody
 } from "@material-ui/core";
 
 interface Stock {
     barcode: number;
     name: string;
+    active: boolean;
     totalAmount: number;
 }
 
 interface StockTableProps {
     stocks: Stock[];
     filter: string;
-    loadStock(): void;
 }
 
 interface SortedColumn {
@@ -28,7 +25,7 @@ interface SortedColumn {
     ascending: boolean;
 }
 
-const StockTable: React.FC<StockTableProps> = ({ stocks, filter, loadStock }) => {
+const StockTable: React.FC<StockTableProps> = ({ stocks, filter }) => {
     const columnBarcode = 'barcode';
     const columnName = 'name';
     const columnTotalAmount = 'totalAmount';
@@ -42,6 +39,22 @@ const StockTable: React.FC<StockTableProps> = ({ stocks, filter, loadStock }) =>
     useEffect(() => {
         setStocksShow(stocks);
     }, [stocks]);
+
+    useEffect(() => {
+        if(filter.length) {
+            const stocksFilter: Stock[] = stocks.filter(value => {
+                return (
+                    (value.barcode === parseInt(filter) ||
+                     value.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase())) ||
+                     value.totalAmount === parseInt(filter)
+                );
+            });
+
+            setStocksShow(stocksFilter);
+        } else {
+            setStocksShow(stocks);
+        }
+    }, [filter, stocks])
 
     const sortTable = (columnNameSort: string) => {
         let ascending = columnNameSort === sortColumn.columnName ? !sortColumn.ascending : true
@@ -118,10 +131,10 @@ const StockTable: React.FC<StockTableProps> = ({ stocks, filter, loadStock }) =>
                 </TableHead>
                 <TableBody>
                     {stocksShow.map((stock) => (
-                        <TableRow key={stock.barcode}>
-                            <TableCell align="right">{stock.barcode}</TableCell>
-                            <TableCell align="left">{stock.name}</TableCell>
-                            <TableCell align="right" style={stock.totalAmount < 100 ? {color: 'red'} : {}}>{stock.totalAmount}</TableCell>
+                        <TableRow key={stock.barcode} className="teste">
+                            <TableCell align="right" id={!stock.active ? "inactive-row" : ""}>{stock.barcode}</TableCell>
+                            <TableCell align="left" id={!stock.active ? "inactive-row" : ""}>{stock.name}</TableCell>
+                            <TableCell align="right" id={!stock.active ? "inactive-row" : stock.totalAmount < 100 ? "low-quantity" : "" }>{stock.totalAmount}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
