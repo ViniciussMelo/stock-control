@@ -13,7 +13,7 @@ interface Stock {
     stock_type: string;
     amount: number;
     moviment_date: Date;
-    product_barcode: number;
+    barcode: number;
 }
 
 interface StockView {
@@ -27,18 +27,18 @@ class StockController {
         let stockView: StockView[] = [];
 
         const stocks: Stock[] = await knex('moviments')
-            .join('products', 'moviments.product_barcode', '=', 'products.barcode')
-            .select(['moviments.*', 'products.name'])
-            .orderBy('moviments.product_barcode');
+            .rightJoin('products', 'moviments.product_barcode', '=', 'products.barcode')
+            .select(['moviments.*', 'products.barcode', 'products.name'])
+            .orderBy('products.barcode');
 
         stocks.forEach((item) => {
-            let indexStock = stockView.findIndex(element => element.barcode === item.product_barcode);
+            let indexStock = stockView.findIndex(element => element.barcode === item.barcode);
             item.quantity = item.stock_type === 'entry' ? item.quantity : - item.quantity;
             if(indexStock > -1) {
                 stockView[indexStock].totalAmount += item.quantity
             } else {
                 stockView.push({
-                    barcode: item.product_barcode,
+                    barcode: item.barcode,
                     name: item.name,
                     totalAmount: item.quantity
                 });
