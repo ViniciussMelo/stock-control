@@ -8,10 +8,10 @@ interface Product {
 
 class StockController {
     async index(request: Request, response: Response) {
-        const stocks = await knex('stock_products')
-            .join('products', 'stock_products.product_barcode', '=', 'products.barcode')
+        const stocks = await knex('moviments')
+            .join('products', 'moviments.product_barcode', '=', 'products.barcode')
             .distinct()
-            .select(['stock_products.*', 'products.name']);
+            .select(['moviments.*', 'products.name']);
         
         return response.json(stocks);
     }
@@ -43,7 +43,7 @@ class StockController {
             product_barcode,
         }
         try {
-            await knex('stock_products').insert(stock);
+            await knex('moviments').insert(stock);
 
             return response.status(201).send();
         } catch(err) {

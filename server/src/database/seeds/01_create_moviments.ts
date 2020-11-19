@@ -1,7 +1,7 @@
 import Knex from 'knex';
 
 export async function seed(knex: Knex) {
-    await knex('stock_products').insert([
+    await knex('moviments').insert([
         { quantity: 10, stock_type: 'entry', amount: 12.50, product_barcode: 1 },
         { quantity: 5, stock_type: 'exit', amount: 6.25, product_barcode: 1 },
         

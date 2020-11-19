@@ -67,7 +67,7 @@ class ProductsController {
             barcode
         } = request.params;
 
-        const stock = await knex('stock_products')
+        const stock = await knex('moviments')
                                 .where('product_barcode', barcode)
                                 .select('*');
 
