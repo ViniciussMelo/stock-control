@@ -16,13 +16,14 @@ import MovimentTable from "./MovimentTable";
 import MovimentDialog from "./MovimentDialog";
 
 import { StockTypeEnum } from "./Enums/stockTypeEnum";
+import { OpenOptions } from './MovimentDialog/openOptionsEnum';
 
 interface Moviment {
     id: number;
     quantity: number;
     stockType: StockTypeEnum;
     movimentDate: Date;
-    amount: string;
+    amount: number;
     barcode: number;
     name: string;
     active: boolean;
@@ -56,7 +57,9 @@ const Moviments = () => {
             {
                 dialogOpen && (
                     <MovimentDialog 
-                        
+                        open={dialogOpen}
+                        handleClose={handleCloseModal}
+                        openOption={OpenOptions.Create}
                     />
                 )
             }

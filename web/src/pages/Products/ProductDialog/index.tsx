@@ -83,31 +83,31 @@ const ProductDialog: React.FC<ProductDialogProp> = ({ openOption, product, open,
 			alert('Error: ' + data.error);
 		}
 		handleClose();
-	}
+	};
 
 	const isValidPrice = (value: string) => {
 		if(!value.length || parseFloat(value) <= 0) {
 			return false;
 		}
 		return true;
-	}
+	};
 
 	const isValidName = (value: string) => {
 		if(!value.trim().length) {
 			return false;
 		}
 		return true;
-	}
+	};
 
 	const handleEditName = (value: string) => {
 		setNewProduct({...newProduct, name: value});
 		setProductError({ ...productError, name: !isValidName });
-	}
+	};
 
 	const handleEditPrice = (value: string) => {
 		setNewProduct({...newProduct, price: parseFloat(value)});
 		setProductError({ ...productError, price: !isValidPrice(value) });
-	}
+	};
 
     return (
         <>

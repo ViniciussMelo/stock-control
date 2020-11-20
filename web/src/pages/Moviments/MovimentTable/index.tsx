@@ -17,13 +17,14 @@ import DialogConfirmation from "../../../components/DialogConfirmation/DialogCon
 
 import { ConfirmationEnum } from "../../../components/DialogConfirmation/ConfirmationEnum";
 import { StockTypeEnum } from "../Enums/stockTypeEnum";
+import { OpenOptions } from '../../Products/ProductDialog/openOptionsEnum';
 
 interface Moviment {
     id: number;
     quantity: number;
     stockType: StockTypeEnum;
     movimentDate: Date;
-    amount: string;
+    amount: number;
     barcode: number;
     name: string;
     active: boolean;
@@ -52,7 +53,7 @@ const MovimentTable: React.FC<MovimentsTableProp> = ({ moviments, filter, loadMo
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogConfirmationOpen, setDialogConfirmationOpen] = useState(false);
     const [sortColumn, setSortColumn] = useState<SortedColumn>({
-        columnName: 'id',
+        columnName: 'barcode',
         ascending: true
     });
     const [movimentsFiltered, setMovimentsFiltered] = useState<Moviment[]>([]);
@@ -65,7 +66,7 @@ const MovimentTable: React.FC<MovimentsTableProp> = ({ moviments, filter, loadMo
                     (value.barcode === parseInt(filter) ||
                     value.name.toLowerCase().includes(filter.toLocaleLowerCase()) ||
                     value.quantity === parseInt(filter) ||
-                    value.amount === filter) && (
+                    value.amount === parseFloat(filter)) && (
                         filterStockType === StockTypeEnum.ALL || value.stockType === filterStockType
                     )
                 );
@@ -144,15 +145,15 @@ const MovimentTable: React.FC<MovimentsTableProp> = ({ moviments, filter, loadMo
     if (movimentsFiltered.length) {
         return (
             <>
-                {/* {dialogOpen && (
-                        <ProductDialog 
+                {dialogOpen && (
+                        <MovimentDialog 
                             open={dialogOpen} 
                             handleClose={handleCloseModal} 
-                            product={selectedProdut} 
+                            moviment={selectedMoviment} 
                             openOption={OpenOptions.Edit} 
                         />
                     )
-                } */}
+                }
                 {
                     dialogConfirmationOpen && (
                         <DialogConfirmation 
