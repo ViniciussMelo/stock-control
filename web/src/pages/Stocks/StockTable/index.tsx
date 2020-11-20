@@ -5,7 +5,8 @@ import {
     TableHead,
     TableRow,
     TableCell,
-    TableBody
+    TableBody,
+    Typography
 } from "@material-ui/core";
 
 interface Stock {
@@ -92,55 +93,59 @@ const StockTable: React.FC<StockTableProps> = ({ stocks, filter }) => {
         return sortColumn.columnName === columnNameSort;
     };
 
-    return (
-        <>
-            <Table aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell align="right"
-                            onClick={() => sortTable(columnBarcode)}
-                        >
-                            Cód. Barras
-                            <span>
-                                {
-                                    renderIconSort(columnBarcode)
-                                }
-                            </span>
-                        </TableCell>
-                        <TableCell align="left" 
-                            onClick={() => sortTable(columnName)}
-                        >
-                            Nome
-                            <span>
-                                {
-                                    renderIconSort(columnName)
-                                }
-                            </span>
-                        </TableCell>
-                        <TableCell align="right"
-                            onClick={() => sortTable(columnTotalAmount)}
-                        >
-                            Quantidade
-                            <span>
-                                {
-                                    renderIconSort(columnTotalAmount)
-                                }
-                            </span>
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {stocksShow.map((stock) => (
-                        <TableRow key={stock.barcode} className="teste">
-                            <TableCell align="right" id={!stock.active ? "inactive-row" : ""}>{stock.barcode}</TableCell>
-                            <TableCell align="left" id={!stock.active ? "inactive-row" : ""}>{stock.name}</TableCell>
-                            <TableCell align="right" id={!stock.active ? "inactive-row" : stock.totalAmount < 100 ? "low-quantity" : "" }>{stock.totalAmount}</TableCell>
+    if (stocksShow.length) {
+        return (
+            <>
+                <Table aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="right"
+                                onClick={() => sortTable(columnBarcode)}
+                            >
+                                Cód. Barras
+                                <span>
+                                    {
+                                        renderIconSort(columnBarcode)
+                                    }
+                                </span>
+                            </TableCell>
+                            <TableCell align="left" 
+                                onClick={() => sortTable(columnName)}
+                            >
+                                Nome
+                                <span>
+                                    {
+                                        renderIconSort(columnName)
+                                    }
+                                </span>
+                            </TableCell>
+                            <TableCell align="right"
+                                onClick={() => sortTable(columnTotalAmount)}
+                            >
+                                Quantidade
+                                <span>
+                                    {
+                                        renderIconSort(columnTotalAmount)
+                                    }
+                                </span>
+                            </TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </>
-    );
+                    </TableHead>
+                    <TableBody>
+                        {stocksShow.map((stock) => (
+                            <TableRow key={stock.barcode} className="teste">
+                                <TableCell align="right" id={!stock.active ? "inactive-row" : ""}>{stock.barcode}</TableCell>
+                                <TableCell align="left" id={!stock.active ? "inactive-row" : ""}>{stock.name}</TableCell>
+                                <TableCell align="right" id={!stock.active ? "inactive-row" : stock.totalAmount < 100 ? "low-quantity" : "" }>{stock.totalAmount}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </>
+        );
+    }
+
+    return (<Typography variant="subtitle1">Nenhum estoque encontrado.</Typography>);
 }
 
 export default StockTable;

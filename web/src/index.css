@@ -8,6 +8,11 @@ body {
     color: rgb(207, 203, 203);
 }
 
-#low-quantity {
+#low-quantity,
+#stock-type-exit {
     color: red;
+}
+
+#stock-type-entry {
+    color: rgb(15, 204, 15);
 }

@@ -16,7 +16,7 @@ import ProductService from "../../../services/ProductService";
 import ProductDialog from "../ProductDialog";
 import DialogConfirmation from "../../../components/DialogConfirmation/DialogConfirmation";
 
-import {OpenOptions} from "../ProductDialog/OpenOptionsEnum";
+import {OpenOptions} from "../ProductDialog/openOptionsEnum";
 import { ConfirmationEnum } from "../../../components/DialogConfirmation/ConfirmationEnum";
 import { statusEnum } from '../';
 
@@ -115,7 +115,7 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter, loadProd
     const handleCloseModal = () => {
         setDialogOpen(false);
         loadProducts();
-    }
+    };
 
     const handleDeleteProduct = (product: Product) => {
         setSelectedProduct(product);

@@ -14,7 +14,7 @@ import ProductService from "../../services/ProductService";
 
 import ProductDialog from "./ProductDialog";
 import ProductTable from "./ProductTable";
-import {OpenOptions} from "./ProductDialog/OpenOptionsEnum";
+import {OpenOptions} from "./ProductDialog/openOptionsEnum";
 
 interface ProductsProps {
     barcode: number;
@@ -46,11 +46,11 @@ const Products = () => {
     const handleCloseModal = () => {
         setDialogOpen(false);
         loadProducts();
-    }
+    };
 
     const handleOpenModal = () => {
         setDialogOpen(true);
-    }
+    };
 
     return (
         <>

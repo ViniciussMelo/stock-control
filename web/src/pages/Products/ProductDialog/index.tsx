@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 
 import ProductService from "../../../services/ProductService";
-import {OpenOptions} from "./OpenOptionsEnum";
+import {OpenOptions} from "./openOptionsEnum";
 
 interface Product {
     barcode: number;
