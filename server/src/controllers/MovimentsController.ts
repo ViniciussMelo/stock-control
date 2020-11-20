@@ -93,8 +93,21 @@ class MovimentsController {
 
     async delete (request: Request, response: Response) {
         const {
-            barcode
+            id
         } = request.params;
+
+        try {
+            await knex('moviments')
+                .where('id', id)
+                .del();
+            
+            return response.status(201).send();
+        } catch(err) {
+            return response.status(400).json({
+                error: 'Unexpected error while deleting the moviment',
+                message: err
+            });
+        }
     }
 }
 
