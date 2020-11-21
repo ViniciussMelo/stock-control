@@ -5,6 +5,6 @@ export async function seed(knex: Knex) {
         { name: 'Prego', price: 1.25 },
         { name: 'Martelo', price: 23.66 },
         { name: 'Parafuso', price: 0.26 },
-        { name: 'Serrote', price: 25.90 },
+        { name: 'Serrote', price: 25.90, active: false },
     ]);
 }
