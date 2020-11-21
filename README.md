@@ -32,7 +32,7 @@ To run the program on your computer, the following configurations / installation
 > ```
 > 	cd ../web
 > ```
-> In the web folder on your command prompt, type the following command
+> In the web folder on your command prompt, type the following command:
 > ```
 > 	yarn install
 >
@@ -40,3 +40,59 @@ To run the program on your computer, the following configurations / installation
 >
 > 	nmp install
 > ```
+> Now, you must ensure that the database server, in this case, the PostgreSQL is connected.
+> 
+> After starting the database server, you need to create a database for the project and a .env file like the .env.example file.
+> Done the previous steps, you need to create the database structure, so this, access your projct's server folder with your command prompt:
+> ```
+> 	cd stock_control/server
+> ```
+> and run this command:
+> ```
+> 	yarn knex:run
+> ```
+> and last:
+> ```
+> 	yarn knex:seed
+> ```
+> Now the structure are created and your database was populated with the seeds.
+
+## Run
+>
+> After configuration the project and waited for the development dependencies to be installed, it is necessary to start the back-end and front-end as follow: 
+>
+> Access the project's web folder with your command prompt:
+> ```
+> 	cd stock-control/web
+> ```
+> and run this command: 
+> ```
+> 	yarn start
+> ```
+> In another command promt, access in the project's server folder:
+> ```
+> 	cd stock_control/api
+> ```
+> Now, run this command:
+> ```
+> 	yarn start
+> ```
+> The application will be running in your navigator, if this not ocurred automaticaly, open your navigator on this adress: http://localhost:3000/
+
+## Functionalities
+
+> This project aims to be: 
+>
+> - Automate the stock controls;
+
+## Links
+
+> Plannig:
+> - [Trello](https://trello.com/b/fe4aJkm2/stock-control)
+
+## Author
+> - **Vinicius Spada Melo** - Software Developer - [Github](https://github.com/ViniciussMelo)
+
+## Preview
+
+![image](https://user-images.githubusercontent.com/25934151/99867112-6932f200-2b95-11eb-8ce2-b7bf06262ad0.png)
