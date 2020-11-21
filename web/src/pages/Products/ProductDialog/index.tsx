@@ -77,7 +77,7 @@ const ProductDialog: React.FC<ProductDialogProp> = ({ openOption, product, open,
 					console.log('Error enum OpenOptions!');								
 					break;
 			}
-			alert('Salvo com sucesso!')
+			alert('Salvo com sucesso!');
 		} catch(err) {
 			const { data } = err.response;
 			alert('Error: ' + data.error);

@@ -18,17 +18,7 @@ import DialogConfirmation from "../../../components/DialogConfirmation/DialogCon
 import { ConfirmationEnum } from "../../../components/DialogConfirmation/ConfirmationEnum";
 import { StockTypeEnum } from "../Enums/stockTypeEnum";
 import { OpenOptions } from '../../Products/ProductDialog/openOptionsEnum';
-
-interface Moviment {
-    id: number;
-    quantity: number;
-    stockType: StockTypeEnum;
-    movimentDate: Date;
-    amount: number;
-    barcode: number;
-    name: string;
-    active: boolean;
-}
+import { Moviment } from '../';
 
 interface MovimentsTableProp {
     moviments: Moviment[];

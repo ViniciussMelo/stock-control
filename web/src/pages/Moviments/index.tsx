@@ -18,7 +18,7 @@ import MovimentDialog from "./MovimentDialog";
 import { StockTypeEnum } from "./Enums/stockTypeEnum";
 import { OpenOptions } from './MovimentDialog/openOptionsEnum';
 
-interface Moviment {
+export interface Moviment {
     id: number;
     quantity: number;
     stockType: StockTypeEnum;
@@ -27,6 +27,7 @@ interface Moviment {
     barcode: number;
     name: string;
     active: boolean;
+    price: number;
 }
 
 const Moviments = () => {
@@ -69,7 +70,7 @@ const Moviments = () => {
                         <FormControl fullWidth>
                             <TextField 
                                 id="pesquisa" 
-                                placeholder="Pesquisa por geral"
+                                placeholder="Pesquisa geral"
                                 value={filter}
                                 onChange={event => setFilter(event.target.value)}
                             />

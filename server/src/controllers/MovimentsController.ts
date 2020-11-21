@@ -16,7 +16,8 @@ class MovimentsController {
                     'moviments.amount',
                     'products.barcode', 
                     'products.name',
-                    'products.active'])
+                    'products.active',
+                    'products.price'])
             .orderBy('moviments.product_barcode');
 
         return response.json(moviments);
@@ -41,7 +42,7 @@ class MovimentsController {
 
         const product: Product = await knex('products')
             .where('barcode', barcode)
-            .select('acitve')
+            .select('active')
             .first();
 
         if (!product.active) {
