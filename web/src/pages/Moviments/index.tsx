@@ -6,9 +6,9 @@ import {
     Button,
     TextField,
     Select,
-    MenuItem,
-    FormHelperText
+    MenuItem
 } from "@material-ui/core";
+import { useTheme } from '@material-ui/core/styles';
 
 import MovimentService from "../../services/MovimentService";
 
@@ -31,9 +31,13 @@ export interface Moviment {
 }
 
 const Moviments = () => {
+    const theme = useTheme();
+    const stockTypes = new Array(StockTypeEnum.ALL, StockTypeEnum.ENTRY, StockTypeEnum.EXIT);
+    
     const [moviments, setMoviments] = useState<Moviment[]>([]);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [filter, setFilter] = useState('');
+    const [stockType, setStockType] = useState(StockTypeEnum.ALL);
     
     useEffect((() => {
         loadMoviments();
@@ -53,6 +57,12 @@ const Moviments = () => {
         setDialogOpen(true);
     };
 
+    const handleSelectStockType = (value: string) => {
+        const stockType: StockTypeEnum = stockTypes.find(type => type === value)!;
+        
+        setStockType(stockType);
+    };
+
     return (
         <>
             {
@@ -65,7 +75,7 @@ const Moviments = () => {
                 )
             }
             <Container style={{paddingTop: '30px'}}>
-                <Grid container spacing={3}>
+                <Grid container spacing={3} >
                     <Grid item xs={6}>
                         <FormControl fullWidth>
                             <TextField 
@@ -74,12 +84,34 @@ const Moviments = () => {
                                 value={filter}
                                 onChange={event => setFilter(event.target.value)}
                             />
-                            <div>
-                                
-                            </div>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={6} style={{display: "flex", alignItems: "flex-start", justifyContent: "flex-end"}}>
+                    <Grid item xs={3}>
+                        <Select 
+                            style={{width: "50%"}}
+                            value={stockType}
+                            onChange={(event) => handleSelectStockType(event.target.value as string)}
+                        >
+                            {stockTypes.map((type, index) => (
+                                <MenuItem
+                                    key={index}
+                                    value={type}
+                                    style={{fontWeight: stockType === type
+                                            ? theme.typography.fontWeightBold
+                                            : theme.typography.fontWeightRegular}}
+                                >
+                                    {
+                                        type === 'entry' ? 
+                                            'Entrada' : 
+                                            type === 'exit' ? 
+                                                'Saída' :
+                                                'Todos'
+                                    }
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Grid>
+                    <Grid item xs={3} style={{display: "flex", alignItems: "flex-start", justifyContent: "flex-end"}}>
                         <Button variant="outlined" color="primary" onClick={handleOpenModal} >Cadastrar</Button>
                     </Grid>
                     <Grid item xs={12}>
@@ -87,7 +119,7 @@ const Moviments = () => {
                             moviments={moviments}
                             filter={filter}
                             loadMoviments={loadMoviments}
-                            filterStockType={StockTypeEnum.ALL} // default
+                            filterStockType={stockType}
                         />
                     </Grid>
                 </Grid>

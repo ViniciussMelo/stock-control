@@ -82,7 +82,7 @@ const ProductTable: React.FC<ProductsTableProps> = ({ products, filter, loadProd
     },[filter, status, products]);
     
     const sortProducts = (columnNameSort: string, ascending: boolean) => {
-        const sortedProducts = products.sort((a: Record<string, any>, b: Record<string, any>) => {
+        const sortedProducts = productsFiltered.sort((a: Record<string, any>, b: Record<string, any>) => {
             if(a[columnNameSort] < b[columnNameSort]) {
                 return ascending ? -1 : 1;
             }

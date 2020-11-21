@@ -72,9 +72,6 @@ const Products = () => {
                                 value={filter}
                                 onChange={event => setFilter(event.target.value)}
                             />
-                            <div>
-                                
-                            </div>
                         </FormControl>
                     </Grid>
                     <Grid item xs={3}>

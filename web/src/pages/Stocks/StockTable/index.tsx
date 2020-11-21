@@ -68,7 +68,7 @@ const StockTable: React.FC<StockTableProps> = ({ stocks, filter }) => {
     }
 
     const sortStock = (columnNameSort: string, ascending: boolean) => {
-        const sortedStocks = stocks.sort((a: Record<string, any>, b: Record<string, any>) => {
+        const sortedStocks = stocksShow.sort((a: Record<string, any>, b: Record<string, any>) => {
             if(a[columnNameSort] < b[columnNameSort]) {
                 return ascending ? -1 : 1;
             }

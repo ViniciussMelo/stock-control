@@ -50,7 +50,7 @@ const MovimentTable: React.FC<MovimentsTableProp> = ({ moviments, filter, loadMo
     const [selectedMoviment, setSelectedMoviment] = useState<Moviment>();
 
     useEffect(() => {
-        if (filter.length) {
+        if (filter.length || filterStockType !== StockTypeEnum.ALL) {
             const movimentsFilter: Moviment[] = moviments.filter(value => { 
                 return (
                     (value.barcode === parseInt(filter) ||
@@ -79,7 +79,7 @@ const MovimentTable: React.FC<MovimentsTableProp> = ({ moviments, filter, loadMo
     };
 
     const sortMoviments = (columnNameSort: string, ascending: boolean) => {
-        const sortedMoviments = moviments.sort((a: Record<string, any>, b: Record<string, any>) => {
+        const sortedMoviments = movimentsFiltered.sort((a: Record<string, any>, b: Record<string, any>) => {
             if(a[columnNameSort] < b[columnNameSort]) {
                 return ascending ? -1 : 1;
             }
