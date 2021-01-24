@@ -11,7 +11,7 @@ To run the program on your computer, the following configurations / installation
 > - **PostgreSQL** with version equal to 9.6 - [PostgreSQL Download](https://www.postgresql.org/download/)
 > - **Git** with version equal or higher than 2.25.1 - [Git Donwload](https://git-scm.com/downloads)
 
-## Instalation
+## Installation
 > Clone this project in your computer with the command:
 > ```
 > 	git clone https://github.com/ViniciussMelo/stock-control.git
