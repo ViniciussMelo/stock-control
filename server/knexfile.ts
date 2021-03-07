@@ -11,10 +11,27 @@ var knexConfig: KnexConfig = {
 	development: {
 		client: "pg",
 		connection: {
-			host : process.env.DB_HOST || "127.0.0.1",
-			user : process.env.DB_USERNAME || "postgres",
-			password :  process.env.DB_PASSWRORD || "123",
-			database : process.env.DB_DEV_NAME || "stock_control"
+			host: process.env.DB_HOST,
+			user: process.env.DB_USERNAME,
+			password: process.env.DB_PASSWRORD,
+			database: process.env.DB_DEV_NAME,
+		},
+		migrations: {
+			directory: path.resolve(__dirname, 'src', 'database', 'migrations'),
+			extension: "ts",
+		},
+		seeds: {
+			directory: path.resolve(__dirname, 'src', 'database', 'seeds'),
+			extension: "ts",
+		}
+	},
+	test: {
+		client: "pg",
+		connection: {
+			host: process.env.DB_HOST,
+			user: process.env.DB_USERNAME,
+			password: process.env.DB_PASSWRORD,
+			database: process.env.DB_TEST_NAME,
 		},
 		migrations: {
 			directory: path.resolve(__dirname, 'src', 'database', 'migrations'),
