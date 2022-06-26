@@ -26,7 +26,7 @@ To run the program on your computer, the following configurations / installation
 >
 > 	or
 >
-> 	nmp install
+> 	npm install
 > ```
 > Now enter in the project's web with your command prompt:
 > ```
